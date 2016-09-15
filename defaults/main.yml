@@ -1,0 +1,8 @@
+flask_server_user: "user"
+flask_server_group: "user"
+flask_repo: "https://github.com/craigkerstiens/flask-helloworld.git"
+flask_app_name: "hello"
+flask_workers: 4
+flask_host: 0.0.0.0
+flask_port: 8000
+flask_git_priv_key_path: /home/user/.ssh/id_rsa
