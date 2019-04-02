@@ -6,7 +6,7 @@
     group: "{{ flask_server_group }}"
     mode: 0755
     state: directory
-  sudo: yes
+  become: yes
   with_items:
     - "{{ flask_repo_path }}"
 
@@ -18,7 +18,7 @@
     - python-pip
     - python-virtualenv
     - git
-  sudo: yes
+  become: yes
 
 - name: Install Flask and Gunicorn
   pip:
@@ -27,7 +27,7 @@
   with_items:
     - Flask
     - gunicorn
-  sudo: yes
+  become: yes
 
 - name: Clone flask app
   git:
@@ -35,12 +35,12 @@
     dest="{{ flask_repo_path }}/{{ flask_app_name }}"
     key_file="{{ flask_git_priv_key_path }}"
     accept_hostkey=yes
-  sudo: yes
-  sudo_user: "{{ flask_server_user }}"
+  become: yes
+  become_user: "{{ flask_server_user }}"
 
 - name: Run Flask app
   shell: 'nohup gunicorn -w "{{ flask_workers }}" -b "{{ flask_host }}:{{ flask_port }}" "{{ flask_app_name }}":app > /tmp/flask.log 2>&1 &'
   args:
     chdir: "{{ flask_repo_path }}/{{ flask_app_name }}"
-  sudo: yes
-  sudo_user: "{{ flask_server_user }}"
+  become: yes
+  become_user: "{{ flask_server_user }}"
